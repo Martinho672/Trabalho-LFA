@@ -25,53 +25,51 @@ def __casos_teste_afd():
 
     while True:
         print("Escolha uma das opções abaixo para se trabalhar com um AFD:\n"
-              "0 - Voltar ao menu principal\n"
-              "1 - Testar cadeias em um AFD\n"
+              "3 - Exportar um AFD para xml\n"
               "2 - Importar um xml para um AFD\n"
-              "3 - Exportar um AFD para xml\n")
+              "1 - Testar cadeias em um AFD\n"
+              "0 - Voltar ao menu principal\n"
+              )
         opcao = int(input("Digite a sua opção: -> "))
+        match opcao:
+            case 0:
+                break
+            case 1:
+                print("\n\n{}\n\n".format(afd))
+                cadeia = input("Digite a cadeia que deseja testar -> ").strip()
+                afd.limpa_afd()
+                parada = afd.move(cadeia)
 
-        if opcao == 0:
-            break
+                if not afd.deu_erro() and afd.estado_final(parada):
+                    print("Aceita a cadeia '{}'\n".format(cadeia))
+                else:
+                    print("Não aceita a cadeia '{}'\n".format(cadeia))
+            case 2:
+                arquivo = input("Digite o nome do arquivo que deseja importar -> ").strip()
+                arq = ManipularArquivo()
+                af = arq.xml_para_afd(arquivo, arq.extrair_alfabeto_do_xml(arquivo))
 
-        elif opcao == 1:
-            print("\n\n{}\n\n".format(afd))
-            cadeia = input("Digite a cadeia que deseja testar -> ").strip()
-            afd.limpa_afd()
-            parada = afd.move(cadeia)
-
-            if not afd.deu_erro() and afd.estado_final(parada):
-                print("Aceita a cadeia '{}'\n".format(cadeia))
-            else:
-                print("Não aceita a cadeia '{}'\n".format(cadeia))
-
-        elif opcao == 2:
-            arquivo = input("Digite o nome do arquivo que deseja importar -> ").strip()
-            arq = ManipularArquivo()
-            af = arq.xml_para_afd(arquivo, arq.extrair_alfabeto_do_xml(arquivo))
-
-            if af is not None:
-                print("AFD importado:\n {}\n\n".format(af))
-                testar_afd = int(input("Deseja testar uma cadeia no AFD importado?\n1 - Sim\n"
-                                       "2 - Não\n-> "))
-                if testar_afd == 1:
-                    cadeia = input("Digite a cadeia que deseja testar -> ").strip()
-                    af.limpa_afd()
-                    parada = af.move(cadeia)
-                    if not af.deu_erro() and af.estado_final(parada):
-                        print("Aceita a cadeia '{}'\n".format(cadeia))
-                    else:
-                        print("Não aceita a cadeia '{}'\n".format(cadeia))
-            else:
-                print("Insira um arquivo de um AFD válido!\n\n")
-
-        elif opcao == 3:
-            arquivo = input("Digite o nome do arquivo para o qual ele será exportado -> ").strip()
-            arq = ManipularArquivo()
-            arq.afd_para_xml(arquivo, afd)
-
-            print("Arquivo exportado com sucesso.\n\n")
-
+                if af is not None:
+                    print("AFD importado:\n {}\n\n".format(af))
+                    testar_afd = int(input("Deseja testar uma cadeia no AFD importado?\n1 - Sim\n"
+                                           "2 - Não\n-> "))
+                    if testar_afd == 1:
+                        cadeia = input("Digite a cadeia que deseja testar -> ").strip()
+                        af.limpa_afd()
+                        parada = af.move(cadeia)
+                        if not af.deu_erro() and af.estado_final(parada):
+                            print("Aceita a cadeia '{}'\n".format(cadeia))
+                        else:
+                            print("Não aceita a cadeia '{}'\n".format(cadeia))
+                else:
+                    print("Insira um arquivo de um AFD válido!\n\n")
+            case 3:
+                arquivo = input("Digite o nome do arquivo para o qual ele será exportado -> ").strip()
+                arq = ManipularArquivo()
+                arq.afd_para_xml(arquivo, afd)
+                print("Arquivo exportado com sucesso.\n\n")
+            case _:
+                print("Opção invalida.")
 
 def __casos_teste_afn():
     opcao = 0
@@ -93,49 +91,50 @@ def __casos_teste_afn():
 
     while True:
         print("Escolha uma das opções abaixo para se trabalhar com um AFN:\n"
-              "0 - Voltar ao menu principal\n"
-              "1 - Testar cadeias em um AFN\n"
+              "3 - Exportar um AFN para xml\n"            
               "2 - Importar um xml para um AFN\n"
-              "3 - Exportar um AFN para xml\n")
+              "1 - Testar cadeias em um AFN\n"
+              "0 - Voltar ao menu principal\n"
+              )
         opcao = int(input("Digite a sua opção: -> "))
-
-        if opcao == 0:
-            break
-        elif opcao == 1:
-            print("\n\n{}\n\n".format(afn))
-            cadeia = input("Digite a cadeia que deseja testar -> ").strip()
-            afn.limpa_afn()
-            parada = afn.move(cadeia)
-
-            if parada:
-                print("Aceita a cadeia '{}'\n".format(cadeia))
-            else:
-                print("Não aceita a cadeia '{}'\n".format(cadeia))
-        elif opcao == 2:
-            arquivo = input("Digite o nome do arquivo que deseja importar -> ").strip()
-            arq = ManipularArquivo()
-            af = arq.xml_para_afn(arquivo, arq.extrair_alfabeto_do_xml(arquivo))
-
-            print("AFN importado:\n {}\n\n".format(af))
-            testar_afn = int(input("Deseja testar uma cadeia no AFN importado?\n1 - Sim\n"
-                                   "2 - Não\n-> "))
-
-            if testar_afn == 1:
+        match opcao:
+            case 0:
+                return 0
+            case 1:
+                print("\n\n{}\n\n".format(afn))
                 cadeia = input("Digite a cadeia que deseja testar -> ").strip()
-                af.limpa_afn()
-                parada = af.move(cadeia)
+                afn.limpa_afn()
+                parada = afn.move(cadeia)
+
                 if parada:
                     print("Aceita a cadeia '{}'\n".format(cadeia))
                 else:
                     print("Não aceita a cadeia '{}'\n".format(cadeia))
+            case 2:
+                arquivo = input("Digite o nome do arquivo que deseja importar -> ").strip()
+                arq = ManipularArquivo()
+                af = arq.xml_para_afn(arquivo, arq.extrair_alfabeto_do_xml(arquivo))
 
-        elif opcao == 3:
-            arquivo = input("Digite o nome do arquivo para o qual ele será exportado -> ").strip()
-            arq = ManipularArquivo()
-            arq.afn_para_xml(arquivo, afn)
+                print("AFN importado:\n {}\n\n".format(af))
+                testar_afn = int(input("Deseja testar uma cadeia no AFN importado?\n1 - Sim\n"
+                                       "2 - Não\n-> "))
 
-            print("Arquivo exportado com sucesso.\n\n")
+                if testar_afn == 1:
+                    cadeia = input("Digite a cadeia que deseja testar -> ").strip()
+                    af.limpa_afn()
+                    parada = af.move(cadeia)
+                    if parada:
+                        print("Aceita a cadeia '{}'\n".format(cadeia))
+                    else:
+                        print("Não aceita a cadeia '{}'\n".format(cadeia))
+            case 3:
+                arquivo = input("Digite o nome do arquivo para o qual ele será exportado -> ").strip()
+                arq = ManipularArquivo()
+                arq.afn_para_xml(arquivo, afn)
 
+                print("Arquivo exportado com sucesso.\n\n")
+            case _:
+                print("Opção invalida.")
     pass
 
 
@@ -224,20 +223,25 @@ def __casos_teste_minimiza_afds():
 def __casos_teste_multiplica_afd():
     op_conjunto = None
     opcao_op = int(input("Digite uma das opções abaixo para a operação de conjuntos:\n"
-                         "1 - União\n"
-                         "2 - Intercessão\n"
-                         "3 - Diferença\n"
                          "4 - Complemento\n"
+                         "3 - Diferença\n"
+                         "2 - Intercessão\n"
+                         "1 - União\n"
+                         "0 - Voltar\n"                         
                          "-> "))
-
-    if opcao_op == 1:
-        op_conjunto = OperaceosConjuntos.UNIAO
-    elif opcao_op == 2:
-        op_conjunto = OperaceosConjuntos.INTERCESSAO
-    elif opcao_op == 3:
-        op_conjunto = OperaceosConjuntos.DIFERENCA
-    elif opcao_op == 4:
-        op_conjunto = OperaceosConjuntos.COMPLEMENTO
+    match opcao_op:
+        case 0:
+            return 0
+        case 1:
+            op_conjunto = OperaceosConjuntos.UNIAO
+        case 2:
+            op_conjunto = OperaceosConjuntos.INTERCESSAO
+        case 3:
+            op_conjunto = OperaceosConjuntos.DIFERENCA
+        case 4:
+            op_conjunto = OperaceosConjuntos.COMPLEMENTO
+        case _:
+            print("Opção invalida.")
 
     # #-- PRIMEIRO AUTOMATO --#
     af1 = AFD("ab")
@@ -572,30 +576,32 @@ if __name__ == '__main__':
 
     while escolha_menu != 0:
         print("## -- TRABALHO LFA - MANIPULAÇÃO DE AUTOMATOS -- ##\nDigite um dos números correspondentes a uma"
-              " das opções abaixo:\n\n"
-              "0 - Sair\n"
-              "1 - Testar um AFD.\n"
-              "2 - Testar um AFN.\n"
-              "3 - Testar multiplicação de autômatos.\n"
-              "4 - Testar minimização de autômatos.\n"
-              "5 - Testar equivalência de autômatos.\n"
+              " das opções abaixo:\n"
+              "7 - Testar conversão de AFN para AFD.\n"              
               "6 - Testar conversão de AFN-λ para AFN.\n"
-              "7 - Testar conversão de AFN para AFD.")
+              "5 - Testar equivalência de autômatos.\n"
+              "4 - Testar minimização de autômatos.\n"
+              "3 - Testar multiplicação de autômatos.\n"
+              "2 - Testar um AFN.\n"
+              "1 - Testar um AFD.\n"
+              "0 - Sair.\n")
         escolha_menu = int(input("Digite a sua opção: -> "))
-
-        if escolha_menu == 0:
-            break
-        elif escolha_menu == 1:
-            __casos_teste_afd()
-        elif escolha_menu == 2:
-            __casos_teste_afn()
-        elif escolha_menu == 3:
-            __casos_teste_multiplica_afd()
-        elif escolha_menu == 4:
-            __casos_teste_minimiza_afds()
-        elif escolha_menu == 5:
-            __casos_teste_equivalencia_automatos()
-        elif escolha_menu == 6:
-            __casos_teste_conversao_afn_lambda_para_afn()
-        elif escolha_menu == 7:
-            __casos_teste_conversao_afn_afd()
+        match escolha_menu:
+            case 0:
+                break
+            case 1:
+                __casos_teste_afd()
+            case 2:
+                __casos_teste_afn()
+            case 3:
+                __casos_teste_multiplica_afd()
+            case 4:
+                __casos_teste_minimiza_afds()
+            case 5:
+                __casos_teste_equivalencia_automatos()
+            case 6:
+                __casos_teste_conversao_afn_lambda_para_afn()
+            case 7:
+                __casos_teste_conversao_afn_afd()
+            case _:
+                print("Opção invalida.")
